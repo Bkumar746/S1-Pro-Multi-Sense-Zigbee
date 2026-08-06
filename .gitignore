@@ -4,3 +4,4 @@
 /sdkconfig.old
 __pycache__/
 *.pyc
+/BUILD.md/
