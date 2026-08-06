@@ -25,6 +25,7 @@ from zhaquirks.clusters import CustomCluster
 
 MANUFACTURER: Final = "Sensy-One"
 MODEL: Final = "S1 Pro Multi Sense (Zigbee)"
+MODEL_PREFIX: Final = "S1 Pro Multi Sense "
 LEGACY_MODEL: Final = "S1-Pro-C6-LD2450"
 ENDPOINT: Final = 10
 CLUSTER_ID: Final = 0xFC00
@@ -67,6 +68,16 @@ IAQ_ACCURACY_LABELS: Final = (
     "Medium accuracy",
     "High accuracy",
 )
+
+
+def matches_s1_pro_model(device) -> bool:
+    model = getattr(device, "model", None)
+    if model in (MODEL, LEGACY_MODEL):
+        return True
+    if not isinstance(model, str) or not model.startswith(MODEL_PREFIX):
+        return False
+    suffix = model[len(MODEL_PREFIX) :]
+    return len(suffix) == 6 and all(character in "0123456789abcdefABCDEF" for character in suffix)
 
 
 def iaq_classification_label(value: int) -> str:
@@ -541,9 +552,10 @@ REPORT_ESP32: Final = ReportingConfig(
 )
 
 builder = (
-    QuirkBuilder(MANUFACTURER, MODEL)
+    QuirkBuilder(MANUFACTURER, None)
+    .applies_to(MANUFACTURER, MODEL)
     .applies_to(MANUFACTURER, LEGACY_MODEL)
-    .friendly_name(model=MODEL, manufacturer=MANUFACTURER)
+    .filter(matches_s1_pro_model)
     .replaces_endpoint(
         endpoint_id=ENDPOINT,
         device_type=zha_profile.DeviceType.COLOR_DIMMABLE_LIGHT,

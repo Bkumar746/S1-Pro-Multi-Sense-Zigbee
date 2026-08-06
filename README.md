@@ -75,7 +75,7 @@ If your `configuration.yaml` already has a `zha:` section, add only the `custom_
 1. Open **Settings → Devices & services → Zigbee Home Automation**.
 2. Select **Add device**.
 3. Connect the S1 Pro to USB-C power.
-4. Wait for **S1 Pro Multi Sense (Zigbee)** by **Sensy-One** to appear.
+4. Wait for **S1 Pro Multi Sense xxxxxx** by **Sensy-One** to appear. The final six characters are the unique identifier of your device.
 
 The LED breathes purple while the S1 Pro is looking for or reconnecting to a Zigbee network. After it connects, the LED returns to the colour and brightness selected in Home Assistant.
 
