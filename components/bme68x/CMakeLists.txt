@@ -1,0 +1,31 @@
+set(BME68X_COMMIT "4f37df69dde205e4f58d2bb9a45568c61e128e86")
+set(BME68X_DOWNLOAD_DIR "${CMAKE_BINARY_DIR}/_deps/bme68x")
+set(BME68X_ARCHIVE "${BME68X_DOWNLOAD_DIR}/${BME68X_COMMIT}.tar.gz")
+set(BME68X_SOURCE_DIR "${BME68X_DOWNLOAD_DIR}/Bosch-BME68x-Library-${BME68X_COMMIT}")
+
+if(NOT EXISTS "${BME68X_SOURCE_DIR}/src/bme68xLibrary.cpp")
+    file(MAKE_DIRECTORY "${BME68X_DOWNLOAD_DIR}")
+    file(
+        DOWNLOAD
+        "https://github.com/boschsensortec/Bosch-BME68x-Library/archive/${BME68X_COMMIT}.tar.gz"
+        "${BME68X_ARCHIVE}"
+        EXPECTED_HASH "SHA256=e897c6655df4dc128bcd0901aebf4060a08787effb49d9cbd3663c137e9435fc"
+        TLS_VERIFY ON
+        STATUS BME68X_DOWNLOAD_STATUS
+    )
+    list(GET BME68X_DOWNLOAD_STATUS 0 BME68X_DOWNLOAD_RESULT)
+    list(GET BME68X_DOWNLOAD_STATUS 1 BME68X_DOWNLOAD_MESSAGE)
+    if(NOT BME68X_DOWNLOAD_RESULT EQUAL 0)
+        message(FATAL_ERROR "BME68x Sensor API download failed: ${BME68X_DOWNLOAD_MESSAGE}")
+    endif()
+    file(ARCHIVE_EXTRACT INPUT "${BME68X_ARCHIVE}" DESTINATION "${BME68X_DOWNLOAD_DIR}")
+endif()
+
+idf_component_register(
+    SRCS
+        "${BME68X_SOURCE_DIR}/src/bme68x/bme68x.c"
+        "${BME68X_SOURCE_DIR}/src/bme68xLibrary.cpp"
+    INCLUDE_DIRS
+        "${BME68X_SOURCE_DIR}/src"
+        "${BME68X_SOURCE_DIR}/src/bme68x"
+)
