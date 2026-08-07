@@ -8,8 +8,8 @@
 #include <string.h>
 
 #include "esp_check.h"
-#include "esp_mac.h"
 #include "driver/temperature_sensor.h"
+#include "esp_app_desc.h"
 #include "esp_timer.h"
 #include "esp_zigbee_attribute.h"
 #include "esp_zigbee_cluster.h"
@@ -85,32 +85,13 @@ static bool s_esp32_status_published;
 static bool s_last_esp32_connected;
 static uint16_t s_pending_esp32_reports[2];
 static size_t s_pending_esp32_report_count;
-static uint8_t s_model_identifier[S1_PRO_MODEL_NAME_MAX_LENGTH + 2U];
+static uint8_t s_software_build_id[17];
 
 #define S1_PRO_RADAR_REPORTS_PER_PUBLISH 12U
 #define S1_PRO_BME_REPORTS_PER_PUBLISH 1U
 #define S1_PRO_SCD40_REPORTS_PER_PUBLISH 1U
 #define S1_PRO_LTR390_REPORTS_PER_PUBLISH 1U
 #define S1_PRO_ESP32_REPORTS_PER_PUBLISH 1U
-
-static esp_err_t initialize_model_identifier(void)
-{
-    uint8_t base_mac[6];
-    ESP_RETURN_ON_ERROR(esp_efuse_mac_get_default(base_mac), TAG,
-                        "Unable to read the device identifier");
-
-    const int length = snprintf((char *)&s_model_identifier[1],
-                                sizeof(s_model_identifier) - 1U,
-                                S1_PRO_MODEL_NAME_PREFIX "%02x%02x%02x",
-                                base_mac[3], base_mac[4], base_mac[5]);
-    ESP_RETURN_ON_FALSE(length > 0 &&
-                            length <= (int)S1_PRO_MODEL_NAME_MAX_LENGTH,
-                        ESP_ERR_INVALID_SIZE, TAG,
-                        "Generated model identifier is invalid");
-
-    s_model_identifier[0] = (uint8_t)length;
-    return ESP_OK;
-}
 
 static void set_joined(bool joined)
 {
@@ -225,7 +206,6 @@ static esp_zb_ep_list_t *create_endpoint(void)
         scd40_settings_get_calibration_reference_ppm();
     initial_scd40_temperature_offset_centi_c =
         S1_PRO_SCD40_DEFAULT_TEMPERATURE_OFFSET_CENTI_C;
-    ESP_ERROR_CHECK(initialize_model_identifier());
     const esp_zb_basic_cluster_cfg_t basic_config = {
         .zcl_version = ESP_ZB_ZCL_BASIC_ZCL_VERSION_DEFAULT_VALUE,
         .power_source = 0x01,
@@ -239,10 +219,17 @@ static esp_zb_ep_list_t *create_endpoint(void)
 
     esp_zb_cluster_list_t *clusters = esp_zb_zcl_cluster_list_create();
     esp_zb_attribute_list_t *basic = esp_zb_basic_cluster_create((esp_zb_basic_cluster_cfg_t *)&basic_config);
+    const char *software_version = esp_app_get_description()->version;
+    const size_t software_version_length =
+        strnlen(software_version, sizeof(s_software_build_id) - 1U);
+    s_software_build_id[0] = (uint8_t)software_version_length;
+    memcpy(&s_software_build_id[1], software_version, software_version_length);
     ESP_ERROR_CHECK(esp_zb_basic_cluster_add_attr(basic, ESP_ZB_ZCL_ATTR_BASIC_MANUFACTURER_NAME_ID,
                                                   (void *)S1_PRO_MANUFACTURER_NAME));
     ESP_ERROR_CHECK(esp_zb_basic_cluster_add_attr(basic, ESP_ZB_ZCL_ATTR_BASIC_MODEL_IDENTIFIER_ID,
-                                                  (void *)s_model_identifier));
+                                                  (void *)S1_PRO_MODEL_NAME));
+    ESP_ERROR_CHECK(esp_zb_basic_cluster_add_attr(
+        basic, ESP_ZB_ZCL_ATTR_BASIC_SW_BUILD_ID, s_software_build_id));
     ESP_ERROR_CHECK(esp_zb_cluster_list_add_basic_cluster(clusters, basic, ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
     ESP_ERROR_CHECK(esp_zb_cluster_list_add_groups_cluster(
         clusters, esp_zb_groups_cluster_create(&light_config.groups_cfg),

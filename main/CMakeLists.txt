@@ -22,6 +22,7 @@ idf_component_register(
     REQUIRES
         driver
         bsec2
+        esp_app_format
         esp_timer
         ld2450_parser
         led_strip

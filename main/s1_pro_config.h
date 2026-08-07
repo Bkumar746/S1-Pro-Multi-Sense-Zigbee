@@ -7,8 +7,7 @@
 #include "driver/uart.h"
 
 #define S1_PRO_MANUFACTURER_NAME "\x09" "Sensy-One"
-#define S1_PRO_MODEL_NAME_PREFIX "S1 Pro Multi Sense "
-#define S1_PRO_MODEL_NAME_MAX_LENGTH 32U
+#define S1_PRO_MODEL_NAME "\x1B" "S1 Pro Multi Sense (Zigbee)"
 
 #define S1_PRO_ENDPOINT_ID 10U
 #define S1_PRO_CUSTOM_CLUSTER_ID 0xFC00U
